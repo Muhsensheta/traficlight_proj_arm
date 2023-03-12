@@ -1,0 +1,2017 @@
+
+TR_LIGHT_AR.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   00000130  08000000  08000000  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         00000d70  08000130  08000130  00010130  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000000  08000ea0  08000ea8  00010ea8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .ARM.extab    00000000  08000ea0  08000ea0  00010ea8  2**0
+                  CONTENTS
+  4 .ARM          00000000  08000ea0  08000ea0  00010ea8  2**0
+                  CONTENTS
+  5 .preinit_array 00000000  08000ea0  08000ea8  00010ea8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000ea0  08000ea0  00010ea0  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .fini_array   00000004  08000ea4  08000ea4  00010ea4  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  8 .data         00000000  20000000  20000000  00010ea8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          00000020  20000000  08000ea8  00020000  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000600  20000020  08000ea8  00020020  2**0
+                  ALLOC
+ 11 .ARM.attributes 00000029  00000000  00000000  00010ea8  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   000004d6  00000000  00000000  00010ed1  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_abbrev 000002a0  00000000  00000000  000113a7  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_aranges 000000d8  00000000  00000000  00011648  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_ranges 00000090  00000000  00000000  00011720  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_macro  00000dfe  00000000  00000000  000117b0  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_line   00000692  00000000  00000000  000125ae  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_str    000038f1  00000000  00000000  00012c40  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .comment      00000050  00000000  00000000  00016531  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  000001dc  00000000  00000000  00016584  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+
+Disassembly of section .text:
+
+08000130 <__do_global_dtors_aux>:
+ 8000130:	b510      	push	{r4, lr}
+ 8000132:	4c05      	ldr	r4, [pc, #20]	; (8000148 <__do_global_dtors_aux+0x18>)
+ 8000134:	7823      	ldrb	r3, [r4, #0]
+ 8000136:	b933      	cbnz	r3, 8000146 <__do_global_dtors_aux+0x16>
+ 8000138:	4b04      	ldr	r3, [pc, #16]	; (800014c <__do_global_dtors_aux+0x1c>)
+ 800013a:	b113      	cbz	r3, 8000142 <__do_global_dtors_aux+0x12>
+ 800013c:	4804      	ldr	r0, [pc, #16]	; (8000150 <__do_global_dtors_aux+0x20>)
+ 800013e:	f3af 8000 	nop.w
+ 8000142:	2301      	movs	r3, #1
+ 8000144:	7023      	strb	r3, [r4, #0]
+ 8000146:	bd10      	pop	{r4, pc}
+ 8000148:	20000000 	.word	0x20000000
+ 800014c:	00000000 	.word	0x00000000
+ 8000150:	08000e88 	.word	0x08000e88
+
+08000154 <frame_dummy>:
+ 8000154:	b508      	push	{r3, lr}
+ 8000156:	4b03      	ldr	r3, [pc, #12]	; (8000164 <frame_dummy+0x10>)
+ 8000158:	b11b      	cbz	r3, 8000162 <frame_dummy+0xe>
+ 800015a:	4903      	ldr	r1, [pc, #12]	; (8000168 <frame_dummy+0x14>)
+ 800015c:	4803      	ldr	r0, [pc, #12]	; (800016c <frame_dummy+0x18>)
+ 800015e:	f3af 8000 	nop.w
+ 8000162:	bd08      	pop	{r3, pc}
+ 8000164:	00000000 	.word	0x00000000
+ 8000168:	20000004 	.word	0x20000004
+ 800016c:	08000e88 	.word	0x08000e88
+
+08000170 <M_GPIO_void_SetPinDir>:
+
+#include "DIO_priv.h"
+#include "DIO_int.h"
+
+void M_GPIO_void_SetPinDir(u8 PortID , u8 PinID , u8 Dir)
+{
+ 8000170:	b480      	push	{r7}
+ 8000172:	b083      	sub	sp, #12
+ 8000174:	af00      	add	r7, sp, #0
+ 8000176:	4603      	mov	r3, r0
+ 8000178:	71fb      	strb	r3, [r7, #7]
+ 800017a:	460b      	mov	r3, r1
+ 800017c:	71bb      	strb	r3, [r7, #6]
+ 800017e:	4613      	mov	r3, r2
+ 8000180:	717b      	strb	r3, [r7, #5]
+	//Range Check
+if(PortID < 3 && PinID < 16 && Dir < 16)
+ 8000182:	79fb      	ldrb	r3, [r7, #7]
+ 8000184:	2b02      	cmp	r3, #2
+ 8000186:	f200 80b6 	bhi.w	80002f6 <M_GPIO_void_SetPinDir+0x186>
+ 800018a:	79bb      	ldrb	r3, [r7, #6]
+ 800018c:	2b0f      	cmp	r3, #15
+ 800018e:	f200 80b2 	bhi.w	80002f6 <M_GPIO_void_SetPinDir+0x186>
+ 8000192:	797b      	ldrb	r3, [r7, #5]
+ 8000194:	2b0f      	cmp	r3, #15
+ 8000196:	f200 80ae 	bhi.w	80002f6 <M_GPIO_void_SetPinDir+0x186>
+{
+	if(PinID < 8) /*PIN0 : PIN7 --> CRL*/
+ 800019a:	79bb      	ldrb	r3, [r7, #6]
+ 800019c:	2b07      	cmp	r3, #7
+ 800019e:	d852      	bhi.n	8000246 <M_GPIO_void_SetPinDir+0xd6>
+	{
+		switch(PortID)
+ 80001a0:	79fb      	ldrb	r3, [r7, #7]
+ 80001a2:	2b02      	cmp	r3, #2
+ 80001a4:	d037      	beq.n	8000216 <M_GPIO_void_SetPinDir+0xa6>
+ 80001a6:	2b02      	cmp	r3, #2
+ 80001a8:	f300 80a6 	bgt.w	80002f8 <M_GPIO_void_SetPinDir+0x188>
+ 80001ac:	2b00      	cmp	r3, #0
+ 80001ae:	d002      	beq.n	80001b6 <M_GPIO_void_SetPinDir+0x46>
+ 80001b0:	2b01      	cmp	r3, #1
+ 80001b2:	d018      	beq.n	80001e6 <M_GPIO_void_SetPinDir+0x76>
+			GPIOC_CRH |=  ((Dir)<<(PinID * 4)); //Assign The 4 Bits
+			break;
+		}
+	}
+	}
+}
+ 80001b4:	e0a0      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+			GPIOA_CRL &= ~(0b1111<<(PinID * 4)); //Clear the 4 Bits
+ 80001b6:	4b53      	ldr	r3, [pc, #332]	; (8000304 <M_GPIO_void_SetPinDir+0x194>)
+ 80001b8:	681b      	ldr	r3, [r3, #0]
+ 80001ba:	79ba      	ldrb	r2, [r7, #6]
+ 80001bc:	0092      	lsls	r2, r2, #2
+ 80001be:	210f      	movs	r1, #15
+ 80001c0:	fa01 f202 	lsl.w	r2, r1, r2
+ 80001c4:	43d2      	mvns	r2, r2
+ 80001c6:	4611      	mov	r1, r2
+ 80001c8:	4a4e      	ldr	r2, [pc, #312]	; (8000304 <M_GPIO_void_SetPinDir+0x194>)
+ 80001ca:	400b      	ands	r3, r1
+ 80001cc:	6013      	str	r3, [r2, #0]
+			GPIOA_CRL |=  ((Dir)<<(PinID * 4)); //Assign The 4 Bits
+ 80001ce:	4b4d      	ldr	r3, [pc, #308]	; (8000304 <M_GPIO_void_SetPinDir+0x194>)
+ 80001d0:	681b      	ldr	r3, [r3, #0]
+ 80001d2:	7979      	ldrb	r1, [r7, #5]
+ 80001d4:	79ba      	ldrb	r2, [r7, #6]
+ 80001d6:	0092      	lsls	r2, r2, #2
+ 80001d8:	fa01 f202 	lsl.w	r2, r1, r2
+ 80001dc:	4611      	mov	r1, r2
+ 80001de:	4a49      	ldr	r2, [pc, #292]	; (8000304 <M_GPIO_void_SetPinDir+0x194>)
+ 80001e0:	430b      	orrs	r3, r1
+ 80001e2:	6013      	str	r3, [r2, #0]
+			break;
+ 80001e4:	e088      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+			GPIOB_CRL &= ~(0b1111<<(PinID * 4)); //Clear the 4 Bits
+ 80001e6:	4b48      	ldr	r3, [pc, #288]	; (8000308 <M_GPIO_void_SetPinDir+0x198>)
+ 80001e8:	681b      	ldr	r3, [r3, #0]
+ 80001ea:	79ba      	ldrb	r2, [r7, #6]
+ 80001ec:	0092      	lsls	r2, r2, #2
+ 80001ee:	210f      	movs	r1, #15
+ 80001f0:	fa01 f202 	lsl.w	r2, r1, r2
+ 80001f4:	43d2      	mvns	r2, r2
+ 80001f6:	4611      	mov	r1, r2
+ 80001f8:	4a43      	ldr	r2, [pc, #268]	; (8000308 <M_GPIO_void_SetPinDir+0x198>)
+ 80001fa:	400b      	ands	r3, r1
+ 80001fc:	6013      	str	r3, [r2, #0]
+			GPIOB_CRL |=  ((Dir)<<(PinID * 4)); //Assign The 4 Bits
+ 80001fe:	4b42      	ldr	r3, [pc, #264]	; (8000308 <M_GPIO_void_SetPinDir+0x198>)
+ 8000200:	681b      	ldr	r3, [r3, #0]
+ 8000202:	7979      	ldrb	r1, [r7, #5]
+ 8000204:	79ba      	ldrb	r2, [r7, #6]
+ 8000206:	0092      	lsls	r2, r2, #2
+ 8000208:	fa01 f202 	lsl.w	r2, r1, r2
+ 800020c:	4611      	mov	r1, r2
+ 800020e:	4a3e      	ldr	r2, [pc, #248]	; (8000308 <M_GPIO_void_SetPinDir+0x198>)
+ 8000210:	430b      	orrs	r3, r1
+ 8000212:	6013      	str	r3, [r2, #0]
+			break;
+ 8000214:	e070      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+			GPIOC_CRL &= ~(0b1111<<(PinID * 4)); //Clear the 4 Bits
+ 8000216:	4b3d      	ldr	r3, [pc, #244]	; (800030c <M_GPIO_void_SetPinDir+0x19c>)
+ 8000218:	681b      	ldr	r3, [r3, #0]
+ 800021a:	79ba      	ldrb	r2, [r7, #6]
+ 800021c:	0092      	lsls	r2, r2, #2
+ 800021e:	210f      	movs	r1, #15
+ 8000220:	fa01 f202 	lsl.w	r2, r1, r2
+ 8000224:	43d2      	mvns	r2, r2
+ 8000226:	4611      	mov	r1, r2
+ 8000228:	4a38      	ldr	r2, [pc, #224]	; (800030c <M_GPIO_void_SetPinDir+0x19c>)
+ 800022a:	400b      	ands	r3, r1
+ 800022c:	6013      	str	r3, [r2, #0]
+			GPIOC_CRL |=  ((Dir)<<(PinID * 4)); //Assign The 4 Bits
+ 800022e:	4b37      	ldr	r3, [pc, #220]	; (800030c <M_GPIO_void_SetPinDir+0x19c>)
+ 8000230:	681b      	ldr	r3, [r3, #0]
+ 8000232:	7979      	ldrb	r1, [r7, #5]
+ 8000234:	79ba      	ldrb	r2, [r7, #6]
+ 8000236:	0092      	lsls	r2, r2, #2
+ 8000238:	fa01 f202 	lsl.w	r2, r1, r2
+ 800023c:	4611      	mov	r1, r2
+ 800023e:	4a33      	ldr	r2, [pc, #204]	; (800030c <M_GPIO_void_SetPinDir+0x19c>)
+ 8000240:	430b      	orrs	r3, r1
+ 8000242:	6013      	str	r3, [r2, #0]
+			break;
+ 8000244:	e058      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+	else if(PinID < 16) /*PIN0 : PIN7 --> CRL*/
+ 8000246:	79bb      	ldrb	r3, [r7, #6]
+ 8000248:	2b0f      	cmp	r3, #15
+ 800024a:	d854      	bhi.n	80002f6 <M_GPIO_void_SetPinDir+0x186>
+		PinID -=8;
+ 800024c:	79bb      	ldrb	r3, [r7, #6]
+ 800024e:	3b08      	subs	r3, #8
+ 8000250:	71bb      	strb	r3, [r7, #6]
+		switch(PortID)
+ 8000252:	79fb      	ldrb	r3, [r7, #7]
+ 8000254:	2b02      	cmp	r3, #2
+ 8000256:	d036      	beq.n	80002c6 <M_GPIO_void_SetPinDir+0x156>
+ 8000258:	2b02      	cmp	r3, #2
+ 800025a:	dc4d      	bgt.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+ 800025c:	2b00      	cmp	r3, #0
+ 800025e:	d002      	beq.n	8000266 <M_GPIO_void_SetPinDir+0xf6>
+ 8000260:	2b01      	cmp	r3, #1
+ 8000262:	d018      	beq.n	8000296 <M_GPIO_void_SetPinDir+0x126>
+}
+ 8000264:	e048      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+			GPIOA_CRH &= ~(0b1111<<(PinID * 4)); //Clear the 4 Bits
+ 8000266:	4b2a      	ldr	r3, [pc, #168]	; (8000310 <M_GPIO_void_SetPinDir+0x1a0>)
+ 8000268:	681b      	ldr	r3, [r3, #0]
+ 800026a:	79ba      	ldrb	r2, [r7, #6]
+ 800026c:	0092      	lsls	r2, r2, #2
+ 800026e:	210f      	movs	r1, #15
+ 8000270:	fa01 f202 	lsl.w	r2, r1, r2
+ 8000274:	43d2      	mvns	r2, r2
+ 8000276:	4611      	mov	r1, r2
+ 8000278:	4a25      	ldr	r2, [pc, #148]	; (8000310 <M_GPIO_void_SetPinDir+0x1a0>)
+ 800027a:	400b      	ands	r3, r1
+ 800027c:	6013      	str	r3, [r2, #0]
+			GPIOA_CRH |=  ((Dir)<<(PinID * 4)); //Assign The 4 Bits
+ 800027e:	4b24      	ldr	r3, [pc, #144]	; (8000310 <M_GPIO_void_SetPinDir+0x1a0>)
+ 8000280:	681b      	ldr	r3, [r3, #0]
+ 8000282:	7979      	ldrb	r1, [r7, #5]
+ 8000284:	79ba      	ldrb	r2, [r7, #6]
+ 8000286:	0092      	lsls	r2, r2, #2
+ 8000288:	fa01 f202 	lsl.w	r2, r1, r2
+ 800028c:	4611      	mov	r1, r2
+ 800028e:	4a20      	ldr	r2, [pc, #128]	; (8000310 <M_GPIO_void_SetPinDir+0x1a0>)
+ 8000290:	430b      	orrs	r3, r1
+ 8000292:	6013      	str	r3, [r2, #0]
+			break;
+ 8000294:	e030      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+			GPIOB_CRH &= ~(0b1111<<(PinID * 4)); //Clear the 4 Bits
+ 8000296:	4b1f      	ldr	r3, [pc, #124]	; (8000314 <M_GPIO_void_SetPinDir+0x1a4>)
+ 8000298:	681b      	ldr	r3, [r3, #0]
+ 800029a:	79ba      	ldrb	r2, [r7, #6]
+ 800029c:	0092      	lsls	r2, r2, #2
+ 800029e:	210f      	movs	r1, #15
+ 80002a0:	fa01 f202 	lsl.w	r2, r1, r2
+ 80002a4:	43d2      	mvns	r2, r2
+ 80002a6:	4611      	mov	r1, r2
+ 80002a8:	4a1a      	ldr	r2, [pc, #104]	; (8000314 <M_GPIO_void_SetPinDir+0x1a4>)
+ 80002aa:	400b      	ands	r3, r1
+ 80002ac:	6013      	str	r3, [r2, #0]
+			GPIOB_CRH |=  ((Dir)<<(PinID * 4)); //Assign The 4 Bits
+ 80002ae:	4b19      	ldr	r3, [pc, #100]	; (8000314 <M_GPIO_void_SetPinDir+0x1a4>)
+ 80002b0:	681b      	ldr	r3, [r3, #0]
+ 80002b2:	7979      	ldrb	r1, [r7, #5]
+ 80002b4:	79ba      	ldrb	r2, [r7, #6]
+ 80002b6:	0092      	lsls	r2, r2, #2
+ 80002b8:	fa01 f202 	lsl.w	r2, r1, r2
+ 80002bc:	4611      	mov	r1, r2
+ 80002be:	4a15      	ldr	r2, [pc, #84]	; (8000314 <M_GPIO_void_SetPinDir+0x1a4>)
+ 80002c0:	430b      	orrs	r3, r1
+ 80002c2:	6013      	str	r3, [r2, #0]
+			break;
+ 80002c4:	e018      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+			GPIOC_CRH &= ~(0b1111<<(PinID * 4)); //Clear the 4 Bits
+ 80002c6:	4b14      	ldr	r3, [pc, #80]	; (8000318 <M_GPIO_void_SetPinDir+0x1a8>)
+ 80002c8:	681b      	ldr	r3, [r3, #0]
+ 80002ca:	79ba      	ldrb	r2, [r7, #6]
+ 80002cc:	0092      	lsls	r2, r2, #2
+ 80002ce:	210f      	movs	r1, #15
+ 80002d0:	fa01 f202 	lsl.w	r2, r1, r2
+ 80002d4:	43d2      	mvns	r2, r2
+ 80002d6:	4611      	mov	r1, r2
+ 80002d8:	4a0f      	ldr	r2, [pc, #60]	; (8000318 <M_GPIO_void_SetPinDir+0x1a8>)
+ 80002da:	400b      	ands	r3, r1
+ 80002dc:	6013      	str	r3, [r2, #0]
+			GPIOC_CRH |=  ((Dir)<<(PinID * 4)); //Assign The 4 Bits
+ 80002de:	4b0e      	ldr	r3, [pc, #56]	; (8000318 <M_GPIO_void_SetPinDir+0x1a8>)
+ 80002e0:	681b      	ldr	r3, [r3, #0]
+ 80002e2:	7979      	ldrb	r1, [r7, #5]
+ 80002e4:	79ba      	ldrb	r2, [r7, #6]
+ 80002e6:	0092      	lsls	r2, r2, #2
+ 80002e8:	fa01 f202 	lsl.w	r2, r1, r2
+ 80002ec:	4611      	mov	r1, r2
+ 80002ee:	4a0a      	ldr	r2, [pc, #40]	; (8000318 <M_GPIO_void_SetPinDir+0x1a8>)
+ 80002f0:	430b      	orrs	r3, r1
+ 80002f2:	6013      	str	r3, [r2, #0]
+			break;
+ 80002f4:	e000      	b.n	80002f8 <M_GPIO_void_SetPinDir+0x188>
+	}
+ 80002f6:	bf00      	nop
+}
+ 80002f8:	bf00      	nop
+ 80002fa:	370c      	adds	r7, #12
+ 80002fc:	46bd      	mov	sp, r7
+ 80002fe:	bc80      	pop	{r7}
+ 8000300:	4770      	bx	lr
+ 8000302:	bf00      	nop
+ 8000304:	40010800 	.word	0x40010800
+ 8000308:	40010c00 	.word	0x40010c00
+ 800030c:	40011000 	.word	0x40011000
+ 8000310:	40010804 	.word	0x40010804
+ 8000314:	40010c04 	.word	0x40010c04
+ 8000318:	40011004 	.word	0x40011004
+
+0800031c <M_GPIO_void_SetPinValue>:
+void M_GPIO_void_SetPinValue(u8 PortID , u8 PinID , u8 Value)
+{
+ 800031c:	b480      	push	{r7}
+ 800031e:	b083      	sub	sp, #12
+ 8000320:	af00      	add	r7, sp, #0
+ 8000322:	4603      	mov	r3, r0
+ 8000324:	71fb      	strb	r3, [r7, #7]
+ 8000326:	460b      	mov	r3, r1
+ 8000328:	71bb      	strb	r3, [r7, #6]
+ 800032a:	4613      	mov	r3, r2
+ 800032c:	717b      	strb	r3, [r7, #5]
+	//Range Check
+if(PortID < 3 && PinID < 16)
+ 800032e:	79fb      	ldrb	r3, [r7, #7]
+ 8000330:	2b02      	cmp	r3, #2
+ 8000332:	d861      	bhi.n	80003f8 <M_GPIO_void_SetPinValue+0xdc>
+ 8000334:	79bb      	ldrb	r3, [r7, #6]
+ 8000336:	2b0f      	cmp	r3, #15
+ 8000338:	d85e      	bhi.n	80003f8 <M_GPIO_void_SetPinValue+0xdc>
+{
+	if(Value == LOW)
+ 800033a:	797b      	ldrb	r3, [r7, #5]
+ 800033c:	2b00      	cmp	r3, #0
+ 800033e:	d12d      	bne.n	800039c <M_GPIO_void_SetPinValue+0x80>
+	{
+		switch(PortID)
+ 8000340:	79fb      	ldrb	r3, [r7, #7]
+ 8000342:	2b02      	cmp	r3, #2
+ 8000344:	d01e      	beq.n	8000384 <M_GPIO_void_SetPinValue+0x68>
+ 8000346:	2b02      	cmp	r3, #2
+ 8000348:	dc57      	bgt.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+ 800034a:	2b00      	cmp	r3, #0
+ 800034c:	d002      	beq.n	8000354 <M_GPIO_void_SetPinValue+0x38>
+ 800034e:	2b01      	cmp	r3, #1
+ 8000350:	d00c      	beq.n	800036c <M_GPIO_void_SetPinValue+0x50>
+			SET_BIT(GPIOC_ODR , PinID);
+			break;
+		}
+	}
+}
+}
+ 8000352:	e052      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+			CLR_BIT(GPIOA_ODR , PinID);
+ 8000354:	4b2b      	ldr	r3, [pc, #172]	; (8000404 <M_GPIO_void_SetPinValue+0xe8>)
+ 8000356:	681b      	ldr	r3, [r3, #0]
+ 8000358:	79ba      	ldrb	r2, [r7, #6]
+ 800035a:	2101      	movs	r1, #1
+ 800035c:	fa01 f202 	lsl.w	r2, r1, r2
+ 8000360:	43d2      	mvns	r2, r2
+ 8000362:	4611      	mov	r1, r2
+ 8000364:	4a27      	ldr	r2, [pc, #156]	; (8000404 <M_GPIO_void_SetPinValue+0xe8>)
+ 8000366:	400b      	ands	r3, r1
+ 8000368:	6013      	str	r3, [r2, #0]
+			break;
+ 800036a:	e046      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+			CLR_BIT(GPIOB_ODR , PinID);
+ 800036c:	4b26      	ldr	r3, [pc, #152]	; (8000408 <M_GPIO_void_SetPinValue+0xec>)
+ 800036e:	681b      	ldr	r3, [r3, #0]
+ 8000370:	79ba      	ldrb	r2, [r7, #6]
+ 8000372:	2101      	movs	r1, #1
+ 8000374:	fa01 f202 	lsl.w	r2, r1, r2
+ 8000378:	43d2      	mvns	r2, r2
+ 800037a:	4611      	mov	r1, r2
+ 800037c:	4a22      	ldr	r2, [pc, #136]	; (8000408 <M_GPIO_void_SetPinValue+0xec>)
+ 800037e:	400b      	ands	r3, r1
+ 8000380:	6013      	str	r3, [r2, #0]
+			break;
+ 8000382:	e03a      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+			CLR_BIT(GPIOC_ODR , PinID);
+ 8000384:	4b21      	ldr	r3, [pc, #132]	; (800040c <M_GPIO_void_SetPinValue+0xf0>)
+ 8000386:	681b      	ldr	r3, [r3, #0]
+ 8000388:	79ba      	ldrb	r2, [r7, #6]
+ 800038a:	2101      	movs	r1, #1
+ 800038c:	fa01 f202 	lsl.w	r2, r1, r2
+ 8000390:	43d2      	mvns	r2, r2
+ 8000392:	4611      	mov	r1, r2
+ 8000394:	4a1d      	ldr	r2, [pc, #116]	; (800040c <M_GPIO_void_SetPinValue+0xf0>)
+ 8000396:	400b      	ands	r3, r1
+ 8000398:	6013      	str	r3, [r2, #0]
+			break;
+ 800039a:	e02e      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+	else if(Value == HIGH)
+ 800039c:	797b      	ldrb	r3, [r7, #5]
+ 800039e:	2b01      	cmp	r3, #1
+ 80003a0:	d12a      	bne.n	80003f8 <M_GPIO_void_SetPinValue+0xdc>
+		switch(PortID)
+ 80003a2:	79fb      	ldrb	r3, [r7, #7]
+ 80003a4:	2b02      	cmp	r3, #2
+ 80003a6:	d01c      	beq.n	80003e2 <M_GPIO_void_SetPinValue+0xc6>
+ 80003a8:	2b02      	cmp	r3, #2
+ 80003aa:	dc26      	bgt.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+ 80003ac:	2b00      	cmp	r3, #0
+ 80003ae:	d002      	beq.n	80003b6 <M_GPIO_void_SetPinValue+0x9a>
+ 80003b0:	2b01      	cmp	r3, #1
+ 80003b2:	d00b      	beq.n	80003cc <M_GPIO_void_SetPinValue+0xb0>
+}
+ 80003b4:	e021      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+			SET_BIT(GPIOA_ODR , PinID);
+ 80003b6:	4b13      	ldr	r3, [pc, #76]	; (8000404 <M_GPIO_void_SetPinValue+0xe8>)
+ 80003b8:	681b      	ldr	r3, [r3, #0]
+ 80003ba:	79ba      	ldrb	r2, [r7, #6]
+ 80003bc:	2101      	movs	r1, #1
+ 80003be:	fa01 f202 	lsl.w	r2, r1, r2
+ 80003c2:	4611      	mov	r1, r2
+ 80003c4:	4a0f      	ldr	r2, [pc, #60]	; (8000404 <M_GPIO_void_SetPinValue+0xe8>)
+ 80003c6:	430b      	orrs	r3, r1
+ 80003c8:	6013      	str	r3, [r2, #0]
+			break;
+ 80003ca:	e016      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+			SET_BIT(GPIOB_ODR , PinID);
+ 80003cc:	4b0e      	ldr	r3, [pc, #56]	; (8000408 <M_GPIO_void_SetPinValue+0xec>)
+ 80003ce:	681b      	ldr	r3, [r3, #0]
+ 80003d0:	79ba      	ldrb	r2, [r7, #6]
+ 80003d2:	2101      	movs	r1, #1
+ 80003d4:	fa01 f202 	lsl.w	r2, r1, r2
+ 80003d8:	4611      	mov	r1, r2
+ 80003da:	4a0b      	ldr	r2, [pc, #44]	; (8000408 <M_GPIO_void_SetPinValue+0xec>)
+ 80003dc:	430b      	orrs	r3, r1
+ 80003de:	6013      	str	r3, [r2, #0]
+			break;
+ 80003e0:	e00b      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+			SET_BIT(GPIOC_ODR , PinID);
+ 80003e2:	4b0a      	ldr	r3, [pc, #40]	; (800040c <M_GPIO_void_SetPinValue+0xf0>)
+ 80003e4:	681b      	ldr	r3, [r3, #0]
+ 80003e6:	79ba      	ldrb	r2, [r7, #6]
+ 80003e8:	2101      	movs	r1, #1
+ 80003ea:	fa01 f202 	lsl.w	r2, r1, r2
+ 80003ee:	4611      	mov	r1, r2
+ 80003f0:	4a06      	ldr	r2, [pc, #24]	; (800040c <M_GPIO_void_SetPinValue+0xf0>)
+ 80003f2:	430b      	orrs	r3, r1
+ 80003f4:	6013      	str	r3, [r2, #0]
+			break;
+ 80003f6:	e000      	b.n	80003fa <M_GPIO_void_SetPinValue+0xde>
+	}
+ 80003f8:	bf00      	nop
+}
+ 80003fa:	bf00      	nop
+ 80003fc:	370c      	adds	r7, #12
+ 80003fe:	46bd      	mov	sp, r7
+ 8000400:	bc80      	pop	{r7}
+ 8000402:	4770      	bx	lr
+ 8000404:	4001080c 	.word	0x4001080c
+ 8000408:	40010c0c 	.word	0x40010c0c
+ 800040c:	4001100c 	.word	0x4001100c
+
+08000410 <MRCC_voidSysClkInit>:
+
+
+
+
+void	MRCC_voidSysClkInit(void)
+{
+ 8000410:	b480      	push	{r7}
+ 8000412:	af00      	add	r7, sp, #0
+	#if			SYSTEM_CLK	==	RCC_HSI
+				SET_BIT(RCC_CR,0);
+ 8000414:	4b0a      	ldr	r3, [pc, #40]	; (8000440 <MRCC_voidSysClkInit+0x30>)
+ 8000416:	681b      	ldr	r3, [r3, #0]
+ 8000418:	4a09      	ldr	r2, [pc, #36]	; (8000440 <MRCC_voidSysClkInit+0x30>)
+ 800041a:	f043 0301 	orr.w	r3, r3, #1
+ 800041e:	6013      	str	r3, [r2, #0]
+				CLR_BIT(RCC_CFGR,0);
+ 8000420:	4b08      	ldr	r3, [pc, #32]	; (8000444 <MRCC_voidSysClkInit+0x34>)
+ 8000422:	681b      	ldr	r3, [r3, #0]
+ 8000424:	4a07      	ldr	r2, [pc, #28]	; (8000444 <MRCC_voidSysClkInit+0x34>)
+ 8000426:	f023 0301 	bic.w	r3, r3, #1
+ 800042a:	6013      	str	r3, [r2, #0]
+				CLR_BIT(RCC_CFGR,1);
+ 800042c:	4b05      	ldr	r3, [pc, #20]	; (8000444 <MRCC_voidSysClkInit+0x34>)
+ 800042e:	681b      	ldr	r3, [r3, #0]
+ 8000430:	4a04      	ldr	r2, [pc, #16]	; (8000444 <MRCC_voidSysClkInit+0x34>)
+ 8000432:	f023 0302 	bic.w	r3, r3, #2
+ 8000436:	6013      	str	r3, [r2, #0]
+				CLR_BIT(RCC_CFGR,0);
+				SET_BIT(RCC_CFGR,1);
+	#else
+		#error	"Wrong choice of RCC clock type"
+	#endif
+}
+ 8000438:	bf00      	nop
+ 800043a:	46bd      	mov	sp, r7
+ 800043c:	bc80      	pop	{r7}
+ 800043e:	4770      	bx	lr
+ 8000440:	40021000 	.word	0x40021000
+ 8000444:	40021004 	.word	0x40021004
+
+08000448 <MRCC_voidEnablePerClk>:
+void	MRCC_voidEnablePerClk(u8 PerBus,u8 PerNum)
+{
+ 8000448:	b480      	push	{r7}
+ 800044a:	b083      	sub	sp, #12
+ 800044c:	af00      	add	r7, sp, #0
+ 800044e:	4603      	mov	r3, r0
+ 8000450:	460a      	mov	r2, r1
+ 8000452:	71fb      	strb	r3, [r7, #7]
+ 8000454:	4613      	mov	r3, r2
+ 8000456:	71bb      	strb	r3, [r7, #6]
+	/*	Range Check						*/
+	if(PerNum<32)
+ 8000458:	79bb      	ldrb	r3, [r7, #6]
+ 800045a:	2b1f      	cmp	r3, #31
+ 800045c:	d82a      	bhi.n	80004b4 <MRCC_voidEnablePerClk+0x6c>
+	{
+		switch(PerBus)
+ 800045e:	79fb      	ldrb	r3, [r7, #7]
+ 8000460:	2b02      	cmp	r3, #2
+ 8000462:	d01c      	beq.n	800049e <MRCC_voidEnablePerClk+0x56>
+ 8000464:	2b02      	cmp	r3, #2
+ 8000466:	dc25      	bgt.n	80004b4 <MRCC_voidEnablePerClk+0x6c>
+ 8000468:	2b00      	cmp	r3, #0
+ 800046a:	d002      	beq.n	8000472 <MRCC_voidEnablePerClk+0x2a>
+ 800046c:	2b01      	cmp	r3, #1
+ 800046e:	d00b      	beq.n	8000488 <MRCC_voidEnablePerClk+0x40>
+			case RCC_APB2	:	SET_BIT(RCC_APB2ENR,PerNum);	break;
+		}
+	}
+	else
+	{/*		Report Error 			*/}	
+}
+ 8000470:	e020      	b.n	80004b4 <MRCC_voidEnablePerClk+0x6c>
+			case RCC_AHB	:	SET_BIT(RCC_AHBENR ,PerNum);	break;
+ 8000472:	4b13      	ldr	r3, [pc, #76]	; (80004c0 <MRCC_voidEnablePerClk+0x78>)
+ 8000474:	681b      	ldr	r3, [r3, #0]
+ 8000476:	79ba      	ldrb	r2, [r7, #6]
+ 8000478:	2101      	movs	r1, #1
+ 800047a:	fa01 f202 	lsl.w	r2, r1, r2
+ 800047e:	4611      	mov	r1, r2
+ 8000480:	4a0f      	ldr	r2, [pc, #60]	; (80004c0 <MRCC_voidEnablePerClk+0x78>)
+ 8000482:	430b      	orrs	r3, r1
+ 8000484:	6013      	str	r3, [r2, #0]
+ 8000486:	e015      	b.n	80004b4 <MRCC_voidEnablePerClk+0x6c>
+			case RCC_APB1	:	SET_BIT(RCC_APB1ENR,PerNum);	break;
+ 8000488:	4b0e      	ldr	r3, [pc, #56]	; (80004c4 <MRCC_voidEnablePerClk+0x7c>)
+ 800048a:	681b      	ldr	r3, [r3, #0]
+ 800048c:	79ba      	ldrb	r2, [r7, #6]
+ 800048e:	2101      	movs	r1, #1
+ 8000490:	fa01 f202 	lsl.w	r2, r1, r2
+ 8000494:	4611      	mov	r1, r2
+ 8000496:	4a0b      	ldr	r2, [pc, #44]	; (80004c4 <MRCC_voidEnablePerClk+0x7c>)
+ 8000498:	430b      	orrs	r3, r1
+ 800049a:	6013      	str	r3, [r2, #0]
+ 800049c:	e00a      	b.n	80004b4 <MRCC_voidEnablePerClk+0x6c>
+			case RCC_APB2	:	SET_BIT(RCC_APB2ENR,PerNum);	break;
+ 800049e:	4b0a      	ldr	r3, [pc, #40]	; (80004c8 <MRCC_voidEnablePerClk+0x80>)
+ 80004a0:	681b      	ldr	r3, [r3, #0]
+ 80004a2:	79ba      	ldrb	r2, [r7, #6]
+ 80004a4:	2101      	movs	r1, #1
+ 80004a6:	fa01 f202 	lsl.w	r2, r1, r2
+ 80004aa:	4611      	mov	r1, r2
+ 80004ac:	4a06      	ldr	r2, [pc, #24]	; (80004c8 <MRCC_voidEnablePerClk+0x80>)
+ 80004ae:	430b      	orrs	r3, r1
+ 80004b0:	6013      	str	r3, [r2, #0]
+ 80004b2:	bf00      	nop
+}
+ 80004b4:	bf00      	nop
+ 80004b6:	370c      	adds	r7, #12
+ 80004b8:	46bd      	mov	sp, r7
+ 80004ba:	bc80      	pop	{r7}
+ 80004bc:	4770      	bx	lr
+ 80004be:	bf00      	nop
+ 80004c0:	40021014 	.word	0x40021014
+ 80004c4:	4002101c 	.word	0x4002101c
+ 80004c8:	40021018 	.word	0x40021018
+
+080004cc <_delay_ms>:
+
+
+
+
+//u8 arr[]={0x3f,};
+void	_delay_ms(u32 _ms){
+ 80004cc:	b480      	push	{r7}
+ 80004ce:	b085      	sub	sp, #20
+ 80004d0:	af00      	add	r7, sp, #0
+ 80004d2:	6078      	str	r0, [r7, #4]
+	for(u32 i = 0; i < (_ms * 500) ; i++)
+ 80004d4:	2300      	movs	r3, #0
+ 80004d6:	60fb      	str	r3, [r7, #12]
+ 80004d8:	e003      	b.n	80004e2 <_delay_ms+0x16>
+	{
+		asm("NOP");
+ 80004da:	bf00      	nop
+	for(u32 i = 0; i < (_ms * 500) ; i++)
+ 80004dc:	68fb      	ldr	r3, [r7, #12]
+ 80004de:	3301      	adds	r3, #1
+ 80004e0:	60fb      	str	r3, [r7, #12]
+ 80004e2:	687b      	ldr	r3, [r7, #4]
+ 80004e4:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
+ 80004e8:	fb02 f303 	mul.w	r3, r2, r3
+ 80004ec:	68fa      	ldr	r2, [r7, #12]
+ 80004ee:	429a      	cmp	r2, r3
+ 80004f0:	d3f3      	bcc.n	80004da <_delay_ms+0xe>
+	}
+}
+ 80004f2:	bf00      	nop
+ 80004f4:	bf00      	nop
+ 80004f6:	3714      	adds	r7, #20
+ 80004f8:	46bd      	mov	sp, r7
+ 80004fa:	bc80      	pop	{r7}
+ 80004fc:	4770      	bx	lr
+
+080004fe <H_SSD_void_init>:
+void H_SSD_void_init(void)
+{
+ 80004fe:	b580      	push	{r7, lr}
+ 8000500:	af00      	add	r7, sp, #0
+	M_GPIO_void_SetPinDir(SSD_LED_A_PORT,  SSD_LED_A_PIN ,OUT_2MHZ_PP);
+ 8000502:	2202      	movs	r2, #2
+ 8000504:	2101      	movs	r1, #1
+ 8000506:	2000      	movs	r0, #0
+ 8000508:	f7ff fe32 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_LED_B_PORT,  SSD_LED_B_PIN ,OUT_2MHZ_PP);
+ 800050c:	2202      	movs	r2, #2
+ 800050e:	2102      	movs	r1, #2
+ 8000510:	2000      	movs	r0, #0
+ 8000512:	f7ff fe2d 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_LED_C_PORT,  SSD_LED_C_PIN ,OUT_2MHZ_PP);
+ 8000516:	2202      	movs	r2, #2
+ 8000518:	2103      	movs	r1, #3
+ 800051a:	2000      	movs	r0, #0
+ 800051c:	f7ff fe28 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_LED_D_PORT,  SSD_LED_D_PIN ,OUT_2MHZ_PP);
+ 8000520:	2202      	movs	r2, #2
+ 8000522:	2104      	movs	r1, #4
+ 8000524:	2000      	movs	r0, #0
+ 8000526:	f7ff fe23 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_LED_E_PORT,  SSD_LED_E_PIN ,OUT_2MHZ_PP);
+ 800052a:	2202      	movs	r2, #2
+ 800052c:	2105      	movs	r1, #5
+ 800052e:	2000      	movs	r0, #0
+ 8000530:	f7ff fe1e 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_LED_F_PORT,  SSD_LED_F_PIN ,OUT_2MHZ_PP);
+ 8000534:	2202      	movs	r2, #2
+ 8000536:	2106      	movs	r1, #6
+ 8000538:	2000      	movs	r0, #0
+ 800053a:	f7ff fe19 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_LED_G_PORT,  SSD_LED_G_PIN ,OUT_2MHZ_PP);
+ 800053e:	2202      	movs	r2, #2
+ 8000540:	2107      	movs	r1, #7
+ 8000542:	2000      	movs	r0, #0
+ 8000544:	f7ff fe14 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_LED_DOT_PORT,  SSD_LED_DOT_PIN ,OUT_2MHZ_PP);
+ 8000548:	2202      	movs	r2, #2
+ 800054a:	2108      	movs	r1, #8
+ 800054c:	2000      	movs	r0, #0
+ 800054e:	f7ff fe0f 	bl	8000170 <M_GPIO_void_SetPinDir>
+
+	//ENABLE DIGITS 1
+
+	M_GPIO_void_SetPinDir(SSD_DIG_1_EN_PORT,  SSD_DIG_1_EN_PIN ,OUT_2MHZ_PP);
+ 8000552:	2202      	movs	r2, #2
+ 8000554:	2109      	movs	r1, #9
+ 8000556:	2000      	movs	r0, #0
+ 8000558:	f7ff fe0a 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(SSD_DIG_2_EN_PORT,  SSD_DIG_2_EN_PIN , OUT_2MHZ_PP);
+ 800055c:	2202      	movs	r2, #2
+ 800055e:	210a      	movs	r1, #10
+ 8000560:	2000      	movs	r0, #0
+ 8000562:	f7ff fe05 	bl	8000170 <M_GPIO_void_SetPinDir>
+
+	M_GPIO_void_SetPinValue(SSD_DIG_1_EN_PORT,SSD_DIG_1_EN_PIN,LOW);
+ 8000566:	2200      	movs	r2, #0
+ 8000568:	2109      	movs	r1, #9
+ 800056a:	2000      	movs	r0, #0
+ 800056c:	f7ff fed6 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_DIG_2_EN_PORT,SSD_DIG_2_EN_PIN,LOW);
+ 8000570:	2200      	movs	r2, #0
+ 8000572:	210a      	movs	r1, #10
+ 8000574:	2000      	movs	r0, #0
+ 8000576:	f7ff fed1 	bl	800031c <M_GPIO_void_SetPinValue>
+}
+ 800057a:	bf00      	nop
+ 800057c:	bd80      	pop	{r7, pc}
+	...
+
+08000580 <H_SSD_void_DisplayNumber>:
+void H_SSD_void_DisplayNumber(u8 number)
+{
+ 8000580:	b580      	push	{r7, lr}
+ 8000582:	b084      	sub	sp, #16
+ 8000584:	af00      	add	r7, sp, #0
+ 8000586:	4603      	mov	r3, r0
+ 8000588:	71fb      	strb	r3, [r7, #7]
+	if(number>99)
+ 800058a:	79fb      	ldrb	r3, [r7, #7]
+ 800058c:	2b63      	cmp	r3, #99	; 0x63
+ 800058e:	f200 83a8 	bhi.w	8000ce2 <H_SSD_void_DisplayNumber+0x762>
+	{
+		return;
+	}
+	u32 i ;
+	u8 units =number % 10;
+ 8000592:	79fa      	ldrb	r2, [r7, #7]
+ 8000594:	4bcf      	ldr	r3, [pc, #828]	; (80008d4 <H_SSD_void_DisplayNumber+0x354>)
+ 8000596:	fba3 1302 	umull	r1, r3, r3, r2
+ 800059a:	08d9      	lsrs	r1, r3, #3
+ 800059c:	460b      	mov	r3, r1
+ 800059e:	009b      	lsls	r3, r3, #2
+ 80005a0:	440b      	add	r3, r1
+ 80005a2:	005b      	lsls	r3, r3, #1
+ 80005a4:	1ad3      	subs	r3, r2, r3
+ 80005a6:	72fb      	strb	r3, [r7, #11]
+	u8 tens = number/10;
+ 80005a8:	79fb      	ldrb	r3, [r7, #7]
+ 80005aa:	4aca      	ldr	r2, [pc, #808]	; (80008d4 <H_SSD_void_DisplayNumber+0x354>)
+ 80005ac:	fba2 2303 	umull	r2, r3, r2, r3
+ 80005b0:	08db      	lsrs	r3, r3, #3
+ 80005b2:	72bb      	strb	r3, [r7, #10]
+	for(i=0;i<SSD_DISPLAYY_TIME ;i++){
+ 80005b4:	2300      	movs	r3, #0
+ 80005b6:	60fb      	str	r3, [r7, #12]
+ 80005b8:	e38e      	b.n	8000cd8 <H_SSD_void_DisplayNumber+0x758>
+
+		switch (units)
+ 80005ba:	7afb      	ldrb	r3, [r7, #11]
+ 80005bc:	2b09      	cmp	r3, #9
+ 80005be:	f200 81b4 	bhi.w	800092a <H_SSD_void_DisplayNumber+0x3aa>
+ 80005c2:	a201      	add	r2, pc, #4	; (adr r2, 80005c8 <H_SSD_void_DisplayNumber+0x48>)
+ 80005c4:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
+ 80005c8:	080005f1 	.word	0x080005f1
+ 80005cc:	08000643 	.word	0x08000643
+ 80005d0:	08000695 	.word	0x08000695
+ 80005d4:	080006e7 	.word	0x080006e7
+ 80005d8:	08000739 	.word	0x08000739
+ 80005dc:	0800078b 	.word	0x0800078b
+ 80005e0:	080007dd 	.word	0x080007dd
+ 80005e4:	0800082f 	.word	0x0800082f
+ 80005e8:	08000881 	.word	0x08000881
+ 80005ec:	080008d9 	.word	0x080008d9
+		{
+		case 0:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 80005f0:	2201      	movs	r2, #1
+ 80005f2:	2101      	movs	r1, #1
+ 80005f4:	2000      	movs	r0, #0
+ 80005f6:	f7ff fe91 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 80005fa:	2201      	movs	r2, #1
+ 80005fc:	2102      	movs	r1, #2
+ 80005fe:	2000      	movs	r0, #0
+ 8000600:	f7ff fe8c 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000604:	2201      	movs	r2, #1
+ 8000606:	2103      	movs	r1, #3
+ 8000608:	2000      	movs	r0, #0
+ 800060a:	f7ff fe87 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 800060e:	2201      	movs	r2, #1
+ 8000610:	2104      	movs	r1, #4
+ 8000612:	2000      	movs	r0, #0
+ 8000614:	f7ff fe82 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 8000618:	2201      	movs	r2, #1
+ 800061a:	2105      	movs	r1, #5
+ 800061c:	2000      	movs	r0, #0
+ 800061e:	f7ff fe7d 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 8000622:	2201      	movs	r2, #1
+ 8000624:	2106      	movs	r1, #6
+ 8000626:	2000      	movs	r0, #0
+ 8000628:	f7ff fe78 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,LOW);
+ 800062c:	2200      	movs	r2, #0
+ 800062e:	2107      	movs	r1, #7
+ 8000630:	2000      	movs	r0, #0
+ 8000632:	f7ff fe73 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000636:	2200      	movs	r2, #0
+ 8000638:	2108      	movs	r1, #8
+ 800063a:	2000      	movs	r0, #0
+ 800063c:	f7ff fe6e 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 8000640:	e173      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+
+		case 1:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,LOW);
+ 8000642:	2200      	movs	r2, #0
+ 8000644:	2101      	movs	r1, #1
+ 8000646:	2000      	movs	r0, #0
+ 8000648:	f7ff fe68 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 800064c:	2201      	movs	r2, #1
+ 800064e:	2102      	movs	r1, #2
+ 8000650:	2000      	movs	r0, #0
+ 8000652:	f7ff fe63 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000656:	2201      	movs	r2, #1
+ 8000658:	2103      	movs	r1, #3
+ 800065a:	2000      	movs	r0, #0
+ 800065c:	f7ff fe5e 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,LOW);
+ 8000660:	2200      	movs	r2, #0
+ 8000662:	2104      	movs	r1, #4
+ 8000664:	2000      	movs	r0, #0
+ 8000666:	f7ff fe59 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 800066a:	2200      	movs	r2, #0
+ 800066c:	2105      	movs	r1, #5
+ 800066e:	2000      	movs	r0, #0
+ 8000670:	f7ff fe54 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 8000674:	2200      	movs	r2, #0
+ 8000676:	2106      	movs	r1, #6
+ 8000678:	2000      	movs	r0, #0
+ 800067a:	f7ff fe4f 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,LOW);
+ 800067e:	2200      	movs	r2, #0
+ 8000680:	2107      	movs	r1, #7
+ 8000682:	2000      	movs	r0, #0
+ 8000684:	f7ff fe4a 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000688:	2200      	movs	r2, #0
+ 800068a:	2108      	movs	r1, #8
+ 800068c:	2000      	movs	r0, #0
+ 800068e:	f7ff fe45 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 8000692:	e14a      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+
+		case 2:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000694:	2201      	movs	r2, #1
+ 8000696:	2101      	movs	r1, #1
+ 8000698:	2000      	movs	r0, #0
+ 800069a:	f7ff fe3f 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 800069e:	2201      	movs	r2, #1
+ 80006a0:	2102      	movs	r1, #2
+ 80006a2:	2000      	movs	r0, #0
+ 80006a4:	f7ff fe3a 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,LOW);
+ 80006a8:	2200      	movs	r2, #0
+ 80006aa:	2103      	movs	r1, #3
+ 80006ac:	2000      	movs	r0, #0
+ 80006ae:	f7ff fe35 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 80006b2:	2201      	movs	r2, #1
+ 80006b4:	2104      	movs	r1, #4
+ 80006b6:	2000      	movs	r0, #0
+ 80006b8:	f7ff fe30 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 80006bc:	2201      	movs	r2, #1
+ 80006be:	2105      	movs	r1, #5
+ 80006c0:	2000      	movs	r0, #0
+ 80006c2:	f7ff fe2b 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 80006c6:	2200      	movs	r2, #0
+ 80006c8:	2106      	movs	r1, #6
+ 80006ca:	2000      	movs	r0, #0
+ 80006cc:	f7ff fe26 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 80006d0:	2201      	movs	r2, #1
+ 80006d2:	2107      	movs	r1, #7
+ 80006d4:	2000      	movs	r0, #0
+ 80006d6:	f7ff fe21 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 80006da:	2200      	movs	r2, #0
+ 80006dc:	2108      	movs	r1, #8
+ 80006de:	2000      	movs	r0, #0
+ 80006e0:	f7ff fe1c 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 80006e4:	e121      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+
+		case 3:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 80006e6:	2201      	movs	r2, #1
+ 80006e8:	2101      	movs	r1, #1
+ 80006ea:	2000      	movs	r0, #0
+ 80006ec:	f7ff fe16 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 80006f0:	2201      	movs	r2, #1
+ 80006f2:	2102      	movs	r1, #2
+ 80006f4:	2000      	movs	r0, #0
+ 80006f6:	f7ff fe11 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 80006fa:	2201      	movs	r2, #1
+ 80006fc:	2103      	movs	r1, #3
+ 80006fe:	2000      	movs	r0, #0
+ 8000700:	f7ff fe0c 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 8000704:	2201      	movs	r2, #1
+ 8000706:	2104      	movs	r1, #4
+ 8000708:	2000      	movs	r0, #0
+ 800070a:	f7ff fe07 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 800070e:	2200      	movs	r2, #0
+ 8000710:	2105      	movs	r1, #5
+ 8000712:	2000      	movs	r0, #0
+ 8000714:	f7ff fe02 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 8000718:	2200      	movs	r2, #0
+ 800071a:	2106      	movs	r1, #6
+ 800071c:	2000      	movs	r0, #0
+ 800071e:	f7ff fdfd 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000722:	2201      	movs	r2, #1
+ 8000724:	2107      	movs	r1, #7
+ 8000726:	2000      	movs	r0, #0
+ 8000728:	f7ff fdf8 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 800072c:	2200      	movs	r2, #0
+ 800072e:	2108      	movs	r1, #8
+ 8000730:	2000      	movs	r0, #0
+ 8000732:	f7ff fdf3 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 8000736:	e0f8      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+
+		case 4:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,LOW);
+ 8000738:	2200      	movs	r2, #0
+ 800073a:	2101      	movs	r1, #1
+ 800073c:	2000      	movs	r0, #0
+ 800073e:	f7ff fded 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000742:	2201      	movs	r2, #1
+ 8000744:	2102      	movs	r1, #2
+ 8000746:	2000      	movs	r0, #0
+ 8000748:	f7ff fde8 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 800074c:	2201      	movs	r2, #1
+ 800074e:	2103      	movs	r1, #3
+ 8000750:	2000      	movs	r0, #0
+ 8000752:	f7ff fde3 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,LOW);
+ 8000756:	2200      	movs	r2, #0
+ 8000758:	2104      	movs	r1, #4
+ 800075a:	2000      	movs	r0, #0
+ 800075c:	f7ff fdde 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000760:	2200      	movs	r2, #0
+ 8000762:	2105      	movs	r1, #5
+ 8000764:	2000      	movs	r0, #0
+ 8000766:	f7ff fdd9 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 800076a:	2201      	movs	r2, #1
+ 800076c:	2106      	movs	r1, #6
+ 800076e:	2000      	movs	r0, #0
+ 8000770:	f7ff fdd4 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000774:	2201      	movs	r2, #1
+ 8000776:	2107      	movs	r1, #7
+ 8000778:	2000      	movs	r0, #0
+ 800077a:	f7ff fdcf 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 800077e:	2200      	movs	r2, #0
+ 8000780:	2108      	movs	r1, #8
+ 8000782:	2000      	movs	r0, #0
+ 8000784:	f7ff fdca 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 8000788:	e0cf      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+
+		case 5:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 800078a:	2201      	movs	r2, #1
+ 800078c:	2101      	movs	r1, #1
+ 800078e:	2000      	movs	r0, #0
+ 8000790:	f7ff fdc4 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,LOW);
+ 8000794:	2200      	movs	r2, #0
+ 8000796:	2102      	movs	r1, #2
+ 8000798:	2000      	movs	r0, #0
+ 800079a:	f7ff fdbf 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 800079e:	2201      	movs	r2, #1
+ 80007a0:	2103      	movs	r1, #3
+ 80007a2:	2000      	movs	r0, #0
+ 80007a4:	f7ff fdba 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 80007a8:	2201      	movs	r2, #1
+ 80007aa:	2104      	movs	r1, #4
+ 80007ac:	2000      	movs	r0, #0
+ 80007ae:	f7ff fdb5 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 80007b2:	2200      	movs	r2, #0
+ 80007b4:	2105      	movs	r1, #5
+ 80007b6:	2000      	movs	r0, #0
+ 80007b8:	f7ff fdb0 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 80007bc:	2201      	movs	r2, #1
+ 80007be:	2106      	movs	r1, #6
+ 80007c0:	2000      	movs	r0, #0
+ 80007c2:	f7ff fdab 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 80007c6:	2201      	movs	r2, #1
+ 80007c8:	2107      	movs	r1, #7
+ 80007ca:	2000      	movs	r0, #0
+ 80007cc:	f7ff fda6 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 80007d0:	2200      	movs	r2, #0
+ 80007d2:	2108      	movs	r1, #8
+ 80007d4:	2000      	movs	r0, #0
+ 80007d6:	f7ff fda1 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 80007da:	e0a6      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+		case 6:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 80007dc:	2201      	movs	r2, #1
+ 80007de:	2101      	movs	r1, #1
+ 80007e0:	2000      	movs	r0, #0
+ 80007e2:	f7ff fd9b 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,LOW);
+ 80007e6:	2200      	movs	r2, #0
+ 80007e8:	2102      	movs	r1, #2
+ 80007ea:	2000      	movs	r0, #0
+ 80007ec:	f7ff fd96 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 80007f0:	2201      	movs	r2, #1
+ 80007f2:	2103      	movs	r1, #3
+ 80007f4:	2000      	movs	r0, #0
+ 80007f6:	f7ff fd91 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 80007fa:	2201      	movs	r2, #1
+ 80007fc:	2104      	movs	r1, #4
+ 80007fe:	2000      	movs	r0, #0
+ 8000800:	f7ff fd8c 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 8000804:	2201      	movs	r2, #1
+ 8000806:	2105      	movs	r1, #5
+ 8000808:	2000      	movs	r0, #0
+ 800080a:	f7ff fd87 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 800080e:	2201      	movs	r2, #1
+ 8000810:	2106      	movs	r1, #6
+ 8000812:	2000      	movs	r0, #0
+ 8000814:	f7ff fd82 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000818:	2201      	movs	r2, #1
+ 800081a:	2107      	movs	r1, #7
+ 800081c:	2000      	movs	r0, #0
+ 800081e:	f7ff fd7d 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000822:	2200      	movs	r2, #0
+ 8000824:	2108      	movs	r1, #8
+ 8000826:	2000      	movs	r0, #0
+ 8000828:	f7ff fd78 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 800082c:	e07d      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+		case 7:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 800082e:	2201      	movs	r2, #1
+ 8000830:	2101      	movs	r1, #1
+ 8000832:	2000      	movs	r0, #0
+ 8000834:	f7ff fd72 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000838:	2201      	movs	r2, #1
+ 800083a:	2102      	movs	r1, #2
+ 800083c:	2000      	movs	r0, #0
+ 800083e:	f7ff fd6d 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000842:	2201      	movs	r2, #1
+ 8000844:	2103      	movs	r1, #3
+ 8000846:	2000      	movs	r0, #0
+ 8000848:	f7ff fd68 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,LOW);
+ 800084c:	2200      	movs	r2, #0
+ 800084e:	2104      	movs	r1, #4
+ 8000850:	2000      	movs	r0, #0
+ 8000852:	f7ff fd63 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000856:	2200      	movs	r2, #0
+ 8000858:	2105      	movs	r1, #5
+ 800085a:	2000      	movs	r0, #0
+ 800085c:	f7ff fd5e 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 8000860:	2200      	movs	r2, #0
+ 8000862:	2106      	movs	r1, #6
+ 8000864:	2000      	movs	r0, #0
+ 8000866:	f7ff fd59 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,LOW);
+ 800086a:	2200      	movs	r2, #0
+ 800086c:	2107      	movs	r1, #7
+ 800086e:	2000      	movs	r0, #0
+ 8000870:	f7ff fd54 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000874:	2200      	movs	r2, #0
+ 8000876:	2108      	movs	r1, #8
+ 8000878:	2000      	movs	r0, #0
+ 800087a:	f7ff fd4f 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 800087e:	e054      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+		case 8:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000880:	2201      	movs	r2, #1
+ 8000882:	2101      	movs	r1, #1
+ 8000884:	2000      	movs	r0, #0
+ 8000886:	f7ff fd49 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 800088a:	2201      	movs	r2, #1
+ 800088c:	2102      	movs	r1, #2
+ 800088e:	2000      	movs	r0, #0
+ 8000890:	f7ff fd44 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000894:	2201      	movs	r2, #1
+ 8000896:	2103      	movs	r1, #3
+ 8000898:	2000      	movs	r0, #0
+ 800089a:	f7ff fd3f 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 800089e:	2201      	movs	r2, #1
+ 80008a0:	2104      	movs	r1, #4
+ 80008a2:	2000      	movs	r0, #0
+ 80008a4:	f7ff fd3a 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 80008a8:	2201      	movs	r2, #1
+ 80008aa:	2105      	movs	r1, #5
+ 80008ac:	2000      	movs	r0, #0
+ 80008ae:	f7ff fd35 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 80008b2:	2201      	movs	r2, #1
+ 80008b4:	2106      	movs	r1, #6
+ 80008b6:	2000      	movs	r0, #0
+ 80008b8:	f7ff fd30 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 80008bc:	2201      	movs	r2, #1
+ 80008be:	2107      	movs	r1, #7
+ 80008c0:	2000      	movs	r0, #0
+ 80008c2:	f7ff fd2b 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 80008c6:	2200      	movs	r2, #0
+ 80008c8:	2108      	movs	r1, #8
+ 80008ca:	2000      	movs	r0, #0
+ 80008cc:	f7ff fd26 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 80008d0:	e02b      	b.n	800092a <H_SSD_void_DisplayNumber+0x3aa>
+ 80008d2:	bf00      	nop
+ 80008d4:	cccccccd 	.word	0xcccccccd
+		case 9:
+			M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 80008d8:	2201      	movs	r2, #1
+ 80008da:	2101      	movs	r1, #1
+ 80008dc:	2000      	movs	r0, #0
+ 80008de:	f7ff fd1d 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 80008e2:	2201      	movs	r2, #1
+ 80008e4:	2102      	movs	r1, #2
+ 80008e6:	2000      	movs	r0, #0
+ 80008e8:	f7ff fd18 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 80008ec:	2201      	movs	r2, #1
+ 80008ee:	2103      	movs	r1, #3
+ 80008f0:	2000      	movs	r0, #0
+ 80008f2:	f7ff fd13 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 80008f6:	2201      	movs	r2, #1
+ 80008f8:	2104      	movs	r1, #4
+ 80008fa:	2000      	movs	r0, #0
+ 80008fc:	f7ff fd0e 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000900:	2200      	movs	r2, #0
+ 8000902:	2105      	movs	r1, #5
+ 8000904:	2000      	movs	r0, #0
+ 8000906:	f7ff fd09 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 800090a:	2201      	movs	r2, #1
+ 800090c:	2106      	movs	r1, #6
+ 800090e:	2000      	movs	r0, #0
+ 8000910:	f7ff fd04 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000914:	2201      	movs	r2, #1
+ 8000916:	2107      	movs	r1, #7
+ 8000918:	2000      	movs	r0, #0
+ 800091a:	f7ff fcff 	bl	800031c <M_GPIO_void_SetPinValue>
+			M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 800091e:	2200      	movs	r2, #0
+ 8000920:	2108      	movs	r1, #8
+ 8000922:	2000      	movs	r0, #0
+ 8000924:	f7ff fcfa 	bl	800031c <M_GPIO_void_SetPinValue>
+			break;
+ 8000928:	bf00      	nop
+
+
+		}
+		//enable digit 1
+		//disable digit 2
+		M_GPIO_void_SetPinValue(SSD_DIG_1_EN_PORT,SSD_DIG_1_EN_PIN,HIGH);
+ 800092a:	2201      	movs	r2, #1
+ 800092c:	2109      	movs	r1, #9
+ 800092e:	2000      	movs	r0, #0
+ 8000930:	f7ff fcf4 	bl	800031c <M_GPIO_void_SetPinValue>
+		M_GPIO_void_SetPinValue(SSD_DIG_2_EN_PORT,SSD_DIG_2_EN_PIN,LOW);
+ 8000934:	2200      	movs	r2, #0
+ 8000936:	210a      	movs	r1, #10
+ 8000938:	2000      	movs	r0, #0
+ 800093a:	f7ff fcef 	bl	800031c <M_GPIO_void_SetPinValue>
+		 _delay_ms(100);
+ 800093e:	2064      	movs	r0, #100	; 0x64
+ 8000940:	f7ff fdc4 	bl	80004cc <_delay_ms>
+		M_GPIO_void_SetPinValue(SSD_DIG_1_EN_PORT,SSD_DIG_1_EN_PIN,LOW);
+ 8000944:	2200      	movs	r2, #0
+ 8000946:	2109      	movs	r1, #9
+ 8000948:	2000      	movs	r0, #0
+ 800094a:	f7ff fce7 	bl	800031c <M_GPIO_void_SetPinValue>
+		switch (tens)
+ 800094e:	7abb      	ldrb	r3, [r7, #10]
+ 8000950:	2b09      	cmp	r3, #9
+ 8000952:	f200 81b1 	bhi.w	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+ 8000956:	a201      	add	r2, pc, #4	; (adr r2, 800095c <H_SSD_void_DisplayNumber+0x3dc>)
+ 8000958:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
+ 800095c:	08000985 	.word	0x08000985
+ 8000960:	080009d7 	.word	0x080009d7
+ 8000964:	08000a29 	.word	0x08000a29
+ 8000968:	08000a7b 	.word	0x08000a7b
+ 800096c:	08000acd 	.word	0x08000acd
+ 8000970:	08000b1f 	.word	0x08000b1f
+ 8000974:	08000b71 	.word	0x08000b71
+ 8000978:	08000bc3 	.word	0x08000bc3
+ 800097c:	08000c15 	.word	0x08000c15
+ 8000980:	08000c67 	.word	0x08000c67
+		{
+		       case 0:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000984:	2201      	movs	r2, #1
+ 8000986:	2101      	movs	r1, #1
+ 8000988:	2000      	movs	r0, #0
+ 800098a:	f7ff fcc7 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 800098e:	2201      	movs	r2, #1
+ 8000990:	2102      	movs	r1, #2
+ 8000992:	2000      	movs	r0, #0
+ 8000994:	f7ff fcc2 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000998:	2201      	movs	r2, #1
+ 800099a:	2103      	movs	r1, #3
+ 800099c:	2000      	movs	r0, #0
+ 800099e:	f7ff fcbd 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 80009a2:	2201      	movs	r2, #1
+ 80009a4:	2104      	movs	r1, #4
+ 80009a6:	2000      	movs	r0, #0
+ 80009a8:	f7ff fcb8 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 80009ac:	2201      	movs	r2, #1
+ 80009ae:	2105      	movs	r1, #5
+ 80009b0:	2000      	movs	r0, #0
+ 80009b2:	f7ff fcb3 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 80009b6:	2201      	movs	r2, #1
+ 80009b8:	2106      	movs	r1, #6
+ 80009ba:	2000      	movs	r0, #0
+ 80009bc:	f7ff fcae 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,LOW);
+ 80009c0:	2200      	movs	r2, #0
+ 80009c2:	2107      	movs	r1, #7
+ 80009c4:	2000      	movs	r0, #0
+ 80009c6:	f7ff fca9 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 80009ca:	2200      	movs	r2, #0
+ 80009cc:	2108      	movs	r1, #8
+ 80009ce:	2000      	movs	r0, #0
+ 80009d0:	f7ff fca4 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 80009d4:	e170      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+
+				case 1:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,LOW);
+ 80009d6:	2200      	movs	r2, #0
+ 80009d8:	2101      	movs	r1, #1
+ 80009da:	2000      	movs	r0, #0
+ 80009dc:	f7ff fc9e 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 80009e0:	2201      	movs	r2, #1
+ 80009e2:	2102      	movs	r1, #2
+ 80009e4:	2000      	movs	r0, #0
+ 80009e6:	f7ff fc99 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 80009ea:	2201      	movs	r2, #1
+ 80009ec:	2103      	movs	r1, #3
+ 80009ee:	2000      	movs	r0, #0
+ 80009f0:	f7ff fc94 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,LOW);
+ 80009f4:	2200      	movs	r2, #0
+ 80009f6:	2104      	movs	r1, #4
+ 80009f8:	2000      	movs	r0, #0
+ 80009fa:	f7ff fc8f 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 80009fe:	2200      	movs	r2, #0
+ 8000a00:	2105      	movs	r1, #5
+ 8000a02:	2000      	movs	r0, #0
+ 8000a04:	f7ff fc8a 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 8000a08:	2200      	movs	r2, #0
+ 8000a0a:	2106      	movs	r1, #6
+ 8000a0c:	2000      	movs	r0, #0
+ 8000a0e:	f7ff fc85 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,LOW);
+ 8000a12:	2200      	movs	r2, #0
+ 8000a14:	2107      	movs	r1, #7
+ 8000a16:	2000      	movs	r0, #0
+ 8000a18:	f7ff fc80 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000a1c:	2200      	movs	r2, #0
+ 8000a1e:	2108      	movs	r1, #8
+ 8000a20:	2000      	movs	r0, #0
+ 8000a22:	f7ff fc7b 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000a26:	e147      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+
+				case 2:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000a28:	2201      	movs	r2, #1
+ 8000a2a:	2101      	movs	r1, #1
+ 8000a2c:	2000      	movs	r0, #0
+ 8000a2e:	f7ff fc75 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000a32:	2201      	movs	r2, #1
+ 8000a34:	2102      	movs	r1, #2
+ 8000a36:	2000      	movs	r0, #0
+ 8000a38:	f7ff fc70 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,LOW);
+ 8000a3c:	2200      	movs	r2, #0
+ 8000a3e:	2103      	movs	r1, #3
+ 8000a40:	2000      	movs	r0, #0
+ 8000a42:	f7ff fc6b 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 8000a46:	2201      	movs	r2, #1
+ 8000a48:	2104      	movs	r1, #4
+ 8000a4a:	2000      	movs	r0, #0
+ 8000a4c:	f7ff fc66 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 8000a50:	2201      	movs	r2, #1
+ 8000a52:	2105      	movs	r1, #5
+ 8000a54:	2000      	movs	r0, #0
+ 8000a56:	f7ff fc61 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 8000a5a:	2200      	movs	r2, #0
+ 8000a5c:	2106      	movs	r1, #6
+ 8000a5e:	2000      	movs	r0, #0
+ 8000a60:	f7ff fc5c 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000a64:	2201      	movs	r2, #1
+ 8000a66:	2107      	movs	r1, #7
+ 8000a68:	2000      	movs	r0, #0
+ 8000a6a:	f7ff fc57 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000a6e:	2200      	movs	r2, #0
+ 8000a70:	2108      	movs	r1, #8
+ 8000a72:	2000      	movs	r0, #0
+ 8000a74:	f7ff fc52 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000a78:	e11e      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+
+				case 3:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000a7a:	2201      	movs	r2, #1
+ 8000a7c:	2101      	movs	r1, #1
+ 8000a7e:	2000      	movs	r0, #0
+ 8000a80:	f7ff fc4c 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000a84:	2201      	movs	r2, #1
+ 8000a86:	2102      	movs	r1, #2
+ 8000a88:	2000      	movs	r0, #0
+ 8000a8a:	f7ff fc47 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000a8e:	2201      	movs	r2, #1
+ 8000a90:	2103      	movs	r1, #3
+ 8000a92:	2000      	movs	r0, #0
+ 8000a94:	f7ff fc42 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 8000a98:	2201      	movs	r2, #1
+ 8000a9a:	2104      	movs	r1, #4
+ 8000a9c:	2000      	movs	r0, #0
+ 8000a9e:	f7ff fc3d 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000aa2:	2200      	movs	r2, #0
+ 8000aa4:	2105      	movs	r1, #5
+ 8000aa6:	2000      	movs	r0, #0
+ 8000aa8:	f7ff fc38 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 8000aac:	2200      	movs	r2, #0
+ 8000aae:	2106      	movs	r1, #6
+ 8000ab0:	2000      	movs	r0, #0
+ 8000ab2:	f7ff fc33 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000ab6:	2201      	movs	r2, #1
+ 8000ab8:	2107      	movs	r1, #7
+ 8000aba:	2000      	movs	r0, #0
+ 8000abc:	f7ff fc2e 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000ac0:	2200      	movs	r2, #0
+ 8000ac2:	2108      	movs	r1, #8
+ 8000ac4:	2000      	movs	r0, #0
+ 8000ac6:	f7ff fc29 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000aca:	e0f5      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+
+				case 4:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,LOW);
+ 8000acc:	2200      	movs	r2, #0
+ 8000ace:	2101      	movs	r1, #1
+ 8000ad0:	2000      	movs	r0, #0
+ 8000ad2:	f7ff fc23 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000ad6:	2201      	movs	r2, #1
+ 8000ad8:	2102      	movs	r1, #2
+ 8000ada:	2000      	movs	r0, #0
+ 8000adc:	f7ff fc1e 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000ae0:	2201      	movs	r2, #1
+ 8000ae2:	2103      	movs	r1, #3
+ 8000ae4:	2000      	movs	r0, #0
+ 8000ae6:	f7ff fc19 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,LOW);
+ 8000aea:	2200      	movs	r2, #0
+ 8000aec:	2104      	movs	r1, #4
+ 8000aee:	2000      	movs	r0, #0
+ 8000af0:	f7ff fc14 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000af4:	2200      	movs	r2, #0
+ 8000af6:	2105      	movs	r1, #5
+ 8000af8:	2000      	movs	r0, #0
+ 8000afa:	f7ff fc0f 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 8000afe:	2201      	movs	r2, #1
+ 8000b00:	2106      	movs	r1, #6
+ 8000b02:	2000      	movs	r0, #0
+ 8000b04:	f7ff fc0a 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000b08:	2201      	movs	r2, #1
+ 8000b0a:	2107      	movs	r1, #7
+ 8000b0c:	2000      	movs	r0, #0
+ 8000b0e:	f7ff fc05 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000b12:	2200      	movs	r2, #0
+ 8000b14:	2108      	movs	r1, #8
+ 8000b16:	2000      	movs	r0, #0
+ 8000b18:	f7ff fc00 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000b1c:	e0cc      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+
+				case 5:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000b1e:	2201      	movs	r2, #1
+ 8000b20:	2101      	movs	r1, #1
+ 8000b22:	2000      	movs	r0, #0
+ 8000b24:	f7ff fbfa 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,LOW);
+ 8000b28:	2200      	movs	r2, #0
+ 8000b2a:	2102      	movs	r1, #2
+ 8000b2c:	2000      	movs	r0, #0
+ 8000b2e:	f7ff fbf5 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000b32:	2201      	movs	r2, #1
+ 8000b34:	2103      	movs	r1, #3
+ 8000b36:	2000      	movs	r0, #0
+ 8000b38:	f7ff fbf0 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 8000b3c:	2201      	movs	r2, #1
+ 8000b3e:	2104      	movs	r1, #4
+ 8000b40:	2000      	movs	r0, #0
+ 8000b42:	f7ff fbeb 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000b46:	2200      	movs	r2, #0
+ 8000b48:	2105      	movs	r1, #5
+ 8000b4a:	2000      	movs	r0, #0
+ 8000b4c:	f7ff fbe6 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 8000b50:	2201      	movs	r2, #1
+ 8000b52:	2106      	movs	r1, #6
+ 8000b54:	2000      	movs	r0, #0
+ 8000b56:	f7ff fbe1 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000b5a:	2201      	movs	r2, #1
+ 8000b5c:	2107      	movs	r1, #7
+ 8000b5e:	2000      	movs	r0, #0
+ 8000b60:	f7ff fbdc 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000b64:	2200      	movs	r2, #0
+ 8000b66:	2108      	movs	r1, #8
+ 8000b68:	2000      	movs	r0, #0
+ 8000b6a:	f7ff fbd7 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000b6e:	e0a3      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+				case 6:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000b70:	2201      	movs	r2, #1
+ 8000b72:	2101      	movs	r1, #1
+ 8000b74:	2000      	movs	r0, #0
+ 8000b76:	f7ff fbd1 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,LOW);
+ 8000b7a:	2200      	movs	r2, #0
+ 8000b7c:	2102      	movs	r1, #2
+ 8000b7e:	2000      	movs	r0, #0
+ 8000b80:	f7ff fbcc 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000b84:	2201      	movs	r2, #1
+ 8000b86:	2103      	movs	r1, #3
+ 8000b88:	2000      	movs	r0, #0
+ 8000b8a:	f7ff fbc7 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 8000b8e:	2201      	movs	r2, #1
+ 8000b90:	2104      	movs	r1, #4
+ 8000b92:	2000      	movs	r0, #0
+ 8000b94:	f7ff fbc2 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 8000b98:	2201      	movs	r2, #1
+ 8000b9a:	2105      	movs	r1, #5
+ 8000b9c:	2000      	movs	r0, #0
+ 8000b9e:	f7ff fbbd 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 8000ba2:	2201      	movs	r2, #1
+ 8000ba4:	2106      	movs	r1, #6
+ 8000ba6:	2000      	movs	r0, #0
+ 8000ba8:	f7ff fbb8 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000bac:	2201      	movs	r2, #1
+ 8000bae:	2107      	movs	r1, #7
+ 8000bb0:	2000      	movs	r0, #0
+ 8000bb2:	f7ff fbb3 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000bb6:	2200      	movs	r2, #0
+ 8000bb8:	2108      	movs	r1, #8
+ 8000bba:	2000      	movs	r0, #0
+ 8000bbc:	f7ff fbae 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000bc0:	e07a      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+				case 7:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000bc2:	2201      	movs	r2, #1
+ 8000bc4:	2101      	movs	r1, #1
+ 8000bc6:	2000      	movs	r0, #0
+ 8000bc8:	f7ff fba8 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000bcc:	2201      	movs	r2, #1
+ 8000bce:	2102      	movs	r1, #2
+ 8000bd0:	2000      	movs	r0, #0
+ 8000bd2:	f7ff fba3 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000bd6:	2201      	movs	r2, #1
+ 8000bd8:	2103      	movs	r1, #3
+ 8000bda:	2000      	movs	r0, #0
+ 8000bdc:	f7ff fb9e 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,LOW);
+ 8000be0:	2200      	movs	r2, #0
+ 8000be2:	2104      	movs	r1, #4
+ 8000be4:	2000      	movs	r0, #0
+ 8000be6:	f7ff fb99 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000bea:	2200      	movs	r2, #0
+ 8000bec:	2105      	movs	r1, #5
+ 8000bee:	2000      	movs	r0, #0
+ 8000bf0:	f7ff fb94 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,LOW);
+ 8000bf4:	2200      	movs	r2, #0
+ 8000bf6:	2106      	movs	r1, #6
+ 8000bf8:	2000      	movs	r0, #0
+ 8000bfa:	f7ff fb8f 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,LOW);
+ 8000bfe:	2200      	movs	r2, #0
+ 8000c00:	2107      	movs	r1, #7
+ 8000c02:	2000      	movs	r0, #0
+ 8000c04:	f7ff fb8a 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000c08:	2200      	movs	r2, #0
+ 8000c0a:	2108      	movs	r1, #8
+ 8000c0c:	2000      	movs	r0, #0
+ 8000c0e:	f7ff fb85 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000c12:	e051      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+				case 8:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000c14:	2201      	movs	r2, #1
+ 8000c16:	2101      	movs	r1, #1
+ 8000c18:	2000      	movs	r0, #0
+ 8000c1a:	f7ff fb7f 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000c1e:	2201      	movs	r2, #1
+ 8000c20:	2102      	movs	r1, #2
+ 8000c22:	2000      	movs	r0, #0
+ 8000c24:	f7ff fb7a 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000c28:	2201      	movs	r2, #1
+ 8000c2a:	2103      	movs	r1, #3
+ 8000c2c:	2000      	movs	r0, #0
+ 8000c2e:	f7ff fb75 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 8000c32:	2201      	movs	r2, #1
+ 8000c34:	2104      	movs	r1, #4
+ 8000c36:	2000      	movs	r0, #0
+ 8000c38:	f7ff fb70 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,HIGH);
+ 8000c3c:	2201      	movs	r2, #1
+ 8000c3e:	2105      	movs	r1, #5
+ 8000c40:	2000      	movs	r0, #0
+ 8000c42:	f7ff fb6b 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 8000c46:	2201      	movs	r2, #1
+ 8000c48:	2106      	movs	r1, #6
+ 8000c4a:	2000      	movs	r0, #0
+ 8000c4c:	f7ff fb66 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000c50:	2201      	movs	r2, #1
+ 8000c52:	2107      	movs	r1, #7
+ 8000c54:	2000      	movs	r0, #0
+ 8000c56:	f7ff fb61 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000c5a:	2200      	movs	r2, #0
+ 8000c5c:	2108      	movs	r1, #8
+ 8000c5e:	2000      	movs	r0, #0
+ 8000c60:	f7ff fb5c 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000c64:	e028      	b.n	8000cb8 <H_SSD_void_DisplayNumber+0x738>
+				case 9:
+					M_GPIO_void_SetPinValue(SSD_LED_A_PORT,SSD_LED_A_PIN,HIGH);
+ 8000c66:	2201      	movs	r2, #1
+ 8000c68:	2101      	movs	r1, #1
+ 8000c6a:	2000      	movs	r0, #0
+ 8000c6c:	f7ff fb56 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_B_PORT,SSD_LED_B_PIN,HIGH);
+ 8000c70:	2201      	movs	r2, #1
+ 8000c72:	2102      	movs	r1, #2
+ 8000c74:	2000      	movs	r0, #0
+ 8000c76:	f7ff fb51 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_C_PORT,SSD_LED_C_PIN,HIGH);
+ 8000c7a:	2201      	movs	r2, #1
+ 8000c7c:	2103      	movs	r1, #3
+ 8000c7e:	2000      	movs	r0, #0
+ 8000c80:	f7ff fb4c 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_D_PORT,SSD_LED_D_PIN,HIGH);
+ 8000c84:	2201      	movs	r2, #1
+ 8000c86:	2104      	movs	r1, #4
+ 8000c88:	2000      	movs	r0, #0
+ 8000c8a:	f7ff fb47 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_E_PORT,SSD_LED_E_PIN,LOW);
+ 8000c8e:	2200      	movs	r2, #0
+ 8000c90:	2105      	movs	r1, #5
+ 8000c92:	2000      	movs	r0, #0
+ 8000c94:	f7ff fb42 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_F_PORT,SSD_LED_F_PIN,HIGH);
+ 8000c98:	2201      	movs	r2, #1
+ 8000c9a:	2106      	movs	r1, #6
+ 8000c9c:	2000      	movs	r0, #0
+ 8000c9e:	f7ff fb3d 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_G_PORT,SSD_LED_G_PIN,HIGH);
+ 8000ca2:	2201      	movs	r2, #1
+ 8000ca4:	2107      	movs	r1, #7
+ 8000ca6:	2000      	movs	r0, #0
+ 8000ca8:	f7ff fb38 	bl	800031c <M_GPIO_void_SetPinValue>
+					M_GPIO_void_SetPinValue(SSD_LED_DOT_PORT,SSD_LED_DOT_PIN,LOW);
+ 8000cac:	2200      	movs	r2, #0
+ 8000cae:	2108      	movs	r1, #8
+ 8000cb0:	2000      	movs	r0, #0
+ 8000cb2:	f7ff fb33 	bl	800031c <M_GPIO_void_SetPinValue>
+					break;
+ 8000cb6:	bf00      	nop
+
+
+
+				}
+		//enable digit 2
+		M_GPIO_void_SetPinValue(SSD_DIG_2_EN_PORT,SSD_DIG_2_EN_PIN,HIGH);
+ 8000cb8:	2201      	movs	r2, #1
+ 8000cba:	210a      	movs	r1, #10
+ 8000cbc:	2000      	movs	r0, #0
+ 8000cbe:	f7ff fb2d 	bl	800031c <M_GPIO_void_SetPinValue>
+
+		 _delay_ms(100);
+ 8000cc2:	2064      	movs	r0, #100	; 0x64
+ 8000cc4:	f7ff fc02 	bl	80004cc <_delay_ms>
+		M_GPIO_void_SetPinValue(SSD_DIG_2_EN_PORT,SSD_DIG_2_EN_PIN,LOW);
+ 8000cc8:	2200      	movs	r2, #0
+ 8000cca:	210a      	movs	r1, #10
+ 8000ccc:	2000      	movs	r0, #0
+ 8000cce:	f7ff fb25 	bl	800031c <M_GPIO_void_SetPinValue>
+	for(i=0;i<SSD_DISPLAYY_TIME ;i++){
+ 8000cd2:	68fb      	ldr	r3, [r7, #12]
+ 8000cd4:	3301      	adds	r3, #1
+ 8000cd6:	60fb      	str	r3, [r7, #12]
+ 8000cd8:	68fb      	ldr	r3, [r7, #12]
+ 8000cda:	2b31      	cmp	r3, #49	; 0x31
+ 8000cdc:	f67f ac6d 	bls.w	80005ba <H_SSD_void_DisplayNumber+0x3a>
+ 8000ce0:	e000      	b.n	8000ce4 <H_SSD_void_DisplayNumber+0x764>
+		return;
+ 8000ce2:	bf00      	nop
+	}
+}
+ 8000ce4:	3710      	adds	r7, #16
+ 8000ce6:	46bd      	mov	sp, r7
+ 8000ce8:	bd80      	pop	{r7, pc}
+ 8000cea:	bf00      	nop
+
+08000cec <main>:
+
+
+
+u8 i,j,k;
+int	main(void)
+{
+ 8000cec:	b580      	push	{r7, lr}
+ 8000cee:	af00      	add	r7, sp, #0
+
+	MRCC_voidSysClkInit();
+ 8000cf0:	f7ff fb8e 	bl	8000410 <MRCC_voidSysClkInit>
+
+	/*	System Clk init			*/
+	
+
+	/*	1- Enable Per Clk "RCC" Port A		*/
+	MRCC_voidEnablePerClk(RCC_APB2,2);
+ 8000cf4:	2102      	movs	r1, #2
+ 8000cf6:	2002      	movs	r0, #2
+ 8000cf8:	f7ff fba6 	bl	8000448 <MRCC_voidEnablePerClk>
+	/*	1- Enable Per Clk "RCC" Port B		*/
+	MRCC_voidEnablePerClk(RCC_APB2,3);
+ 8000cfc:	2103      	movs	r1, #3
+ 8000cfe:	2002      	movs	r0, #2
+ 8000d00:	f7ff fba2 	bl	8000448 <MRCC_voidEnablePerClk>
+	/*	1- Enable Per Clk "RCC" Port C	*/
+	MRCC_voidEnablePerClk(RCC_APB2,4);
+ 8000d04:	2104      	movs	r1, #4
+ 8000d06:	2002      	movs	r0, #2
+ 8000d08:	f7ff fb9e 	bl	8000448 <MRCC_voidEnablePerClk>
+	
+	H_SSD_void_init();
+ 8000d0c:	f7ff fbf7 	bl	80004fe <H_SSD_void_init>
+
+	M_GPIO_void_SetPinDir(PORTB_ID, PIN8_ID, OUT_2MHZ_PP);
+ 8000d10:	2202      	movs	r2, #2
+ 8000d12:	2108      	movs	r1, #8
+ 8000d14:	2001      	movs	r0, #1
+ 8000d16:	f7ff fa2b 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(PORTB_ID, PIN9_ID, OUT_2MHZ_PP);
+ 8000d1a:	2202      	movs	r2, #2
+ 8000d1c:	2109      	movs	r1, #9
+ 8000d1e:	2001      	movs	r0, #1
+ 8000d20:	f7ff fa26 	bl	8000170 <M_GPIO_void_SetPinDir>
+	M_GPIO_void_SetPinDir(PORTB_ID, PIN10_ID, OUT_2MHZ_PP);
+ 8000d24:	2202      	movs	r2, #2
+ 8000d26:	210a      	movs	r1, #10
+ 8000d28:	2001      	movs	r0, #1
+ 8000d2a:	f7ff fa21 	bl	8000170 <M_GPIO_void_SetPinDir>
+	
+
+	while(1)
+	{
+
+		for(i=60;i>0;i--)
+ 8000d2e:	4b2c      	ldr	r3, [pc, #176]	; (8000de0 <main+0xf4>)
+ 8000d30:	223c      	movs	r2, #60	; 0x3c
+ 8000d32:	701a      	strb	r2, [r3, #0]
+ 8000d34:	e00f      	b.n	8000d56 <main+0x6a>
+			{
+			M_GPIO_void_SetPinValue(PORTB_ID, PIN8_ID,HIGH);
+ 8000d36:	2201      	movs	r2, #1
+ 8000d38:	2108      	movs	r1, #8
+ 8000d3a:	2001      	movs	r0, #1
+ 8000d3c:	f7ff faee 	bl	800031c <M_GPIO_void_SetPinValue>
+				H_SSD_void_DisplayNumber(i);
+ 8000d40:	4b27      	ldr	r3, [pc, #156]	; (8000de0 <main+0xf4>)
+ 8000d42:	781b      	ldrb	r3, [r3, #0]
+ 8000d44:	4618      	mov	r0, r3
+ 8000d46:	f7ff fc1b 	bl	8000580 <H_SSD_void_DisplayNumber>
+		for(i=60;i>0;i--)
+ 8000d4a:	4b25      	ldr	r3, [pc, #148]	; (8000de0 <main+0xf4>)
+ 8000d4c:	781b      	ldrb	r3, [r3, #0]
+ 8000d4e:	3b01      	subs	r3, #1
+ 8000d50:	b2da      	uxtb	r2, r3
+ 8000d52:	4b23      	ldr	r3, [pc, #140]	; (8000de0 <main+0xf4>)
+ 8000d54:	701a      	strb	r2, [r3, #0]
+ 8000d56:	4b22      	ldr	r3, [pc, #136]	; (8000de0 <main+0xf4>)
+ 8000d58:	781b      	ldrb	r3, [r3, #0]
+ 8000d5a:	2b00      	cmp	r3, #0
+ 8000d5c:	d1eb      	bne.n	8000d36 <main+0x4a>
+
+
+
+			}
+		M_GPIO_void_SetPinValue(PORTB_ID, PIN8_ID,LOW);
+ 8000d5e:	2200      	movs	r2, #0
+ 8000d60:	2108      	movs	r1, #8
+ 8000d62:	2001      	movs	r0, #1
+ 8000d64:	f7ff fada 	bl	800031c <M_GPIO_void_SetPinValue>
+
+			for(j=60;j>0;j--)
+ 8000d68:	4b1e      	ldr	r3, [pc, #120]	; (8000de4 <main+0xf8>)
+ 8000d6a:	223c      	movs	r2, #60	; 0x3c
+ 8000d6c:	701a      	strb	r2, [r3, #0]
+ 8000d6e:	e00f      	b.n	8000d90 <main+0xa4>
+			{
+				M_GPIO_void_SetPinValue(PORTB_ID, PIN9_ID,HIGH);
+ 8000d70:	2201      	movs	r2, #1
+ 8000d72:	2109      	movs	r1, #9
+ 8000d74:	2001      	movs	r0, #1
+ 8000d76:	f7ff fad1 	bl	800031c <M_GPIO_void_SetPinValue>
+				H_SSD_void_DisplayNumber(j);
+ 8000d7a:	4b1a      	ldr	r3, [pc, #104]	; (8000de4 <main+0xf8>)
+ 8000d7c:	781b      	ldrb	r3, [r3, #0]
+ 8000d7e:	4618      	mov	r0, r3
+ 8000d80:	f7ff fbfe 	bl	8000580 <H_SSD_void_DisplayNumber>
+			for(j=60;j>0;j--)
+ 8000d84:	4b17      	ldr	r3, [pc, #92]	; (8000de4 <main+0xf8>)
+ 8000d86:	781b      	ldrb	r3, [r3, #0]
+ 8000d88:	3b01      	subs	r3, #1
+ 8000d8a:	b2da      	uxtb	r2, r3
+ 8000d8c:	4b15      	ldr	r3, [pc, #84]	; (8000de4 <main+0xf8>)
+ 8000d8e:	701a      	strb	r2, [r3, #0]
+ 8000d90:	4b14      	ldr	r3, [pc, #80]	; (8000de4 <main+0xf8>)
+ 8000d92:	781b      	ldrb	r3, [r3, #0]
+ 8000d94:	2b00      	cmp	r3, #0
+ 8000d96:	d1eb      	bne.n	8000d70 <main+0x84>
+
+
+
+			}
+			M_GPIO_void_SetPinValue(PORTB_ID, PIN9_ID,LOW);
+ 8000d98:	2200      	movs	r2, #0
+ 8000d9a:	2109      	movs	r1, #9
+ 8000d9c:	2001      	movs	r0, #1
+ 8000d9e:	f7ff fabd 	bl	800031c <M_GPIO_void_SetPinValue>
+			for(k=60;k>0;k--)
+ 8000da2:	4b11      	ldr	r3, [pc, #68]	; (8000de8 <main+0xfc>)
+ 8000da4:	223c      	movs	r2, #60	; 0x3c
+ 8000da6:	701a      	strb	r2, [r3, #0]
+ 8000da8:	e00f      	b.n	8000dca <main+0xde>
+			{
+				M_GPIO_void_SetPinValue(PORTB_ID, PIN10_ID,HIGH);
+ 8000daa:	2201      	movs	r2, #1
+ 8000dac:	210a      	movs	r1, #10
+ 8000dae:	2001      	movs	r0, #1
+ 8000db0:	f7ff fab4 	bl	800031c <M_GPIO_void_SetPinValue>
+				H_SSD_void_DisplayNumber(k);
+ 8000db4:	4b0c      	ldr	r3, [pc, #48]	; (8000de8 <main+0xfc>)
+ 8000db6:	781b      	ldrb	r3, [r3, #0]
+ 8000db8:	4618      	mov	r0, r3
+ 8000dba:	f7ff fbe1 	bl	8000580 <H_SSD_void_DisplayNumber>
+			for(k=60;k>0;k--)
+ 8000dbe:	4b0a      	ldr	r3, [pc, #40]	; (8000de8 <main+0xfc>)
+ 8000dc0:	781b      	ldrb	r3, [r3, #0]
+ 8000dc2:	3b01      	subs	r3, #1
+ 8000dc4:	b2da      	uxtb	r2, r3
+ 8000dc6:	4b08      	ldr	r3, [pc, #32]	; (8000de8 <main+0xfc>)
+ 8000dc8:	701a      	strb	r2, [r3, #0]
+ 8000dca:	4b07      	ldr	r3, [pc, #28]	; (8000de8 <main+0xfc>)
+ 8000dcc:	781b      	ldrb	r3, [r3, #0]
+ 8000dce:	2b00      	cmp	r3, #0
+ 8000dd0:	d1eb      	bne.n	8000daa <main+0xbe>
+
+
+
+			}
+			M_GPIO_void_SetPinValue(PORTB_ID, PIN10_ID,LOW);
+ 8000dd2:	2200      	movs	r2, #0
+ 8000dd4:	210a      	movs	r1, #10
+ 8000dd6:	2001      	movs	r0, #1
+ 8000dd8:	f7ff faa0 	bl	800031c <M_GPIO_void_SetPinValue>
+		for(i=60;i>0;i--)
+ 8000ddc:	e7a7      	b.n	8000d2e <main+0x42>
+ 8000dde:	bf00      	nop
+ 8000de0:	2000001c 	.word	0x2000001c
+ 8000de4:	2000001d 	.word	0x2000001d
+ 8000de8:	2000001e 	.word	0x2000001e
+
+08000dec <Reset_Handler>:
+
+  .section .text.Reset_Handler
+  .weak Reset_Handler
+  .type Reset_Handler, %function
+Reset_Handler:
+  ldr   r0, =_estack
+ 8000dec:	480d      	ldr	r0, [pc, #52]	; (8000e24 <LoopForever+0x2>)
+  mov   sp, r0          /* set stack pointer */
+ 8000dee:	4685      	mov	sp, r0
+/* Call the clock system initialization function.*/
+  bl  SystemInit
+ 8000df0:	f3af 8000 	nop.w
+
+/* Copy the data segment initializers from flash to SRAM */
+  ldr r0, =_sdata
+ 8000df4:	480c      	ldr	r0, [pc, #48]	; (8000e28 <LoopForever+0x6>)
+  ldr r1, =_edata
+ 8000df6:	490d      	ldr	r1, [pc, #52]	; (8000e2c <LoopForever+0xa>)
+  ldr r2, =_sidata
+ 8000df8:	4a0d      	ldr	r2, [pc, #52]	; (8000e30 <LoopForever+0xe>)
+  movs r3, #0
+ 8000dfa:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 8000dfc:	e002      	b.n	8000e04 <LoopCopyDataInit>
+
+08000dfe <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 8000dfe:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 8000e00:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 8000e02:	3304      	adds	r3, #4
+
+08000e04 <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 8000e04:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 8000e06:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 8000e08:	d3f9      	bcc.n	8000dfe <CopyDataInit>
+
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 8000e0a:	4a0a      	ldr	r2, [pc, #40]	; (8000e34 <LoopForever+0x12>)
+  ldr r4, =_ebss
+ 8000e0c:	4c0a      	ldr	r4, [pc, #40]	; (8000e38 <LoopForever+0x16>)
+  movs r3, #0
+ 8000e0e:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 8000e10:	e001      	b.n	8000e16 <LoopFillZerobss>
+
+08000e12 <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 8000e12:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 8000e14:	3204      	adds	r2, #4
+
+08000e16 <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 8000e16:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 8000e18:	d3fb      	bcc.n	8000e12 <FillZerobss>
+
+/* Call static constructors */
+  bl __libc_init_array
+ 8000e1a:	f000 f811 	bl	8000e40 <__libc_init_array>
+/* Call the application's entry point.*/
+  bl main
+ 8000e1e:	f7ff ff65 	bl	8000cec <main>
+
+08000e22 <LoopForever>:
+
+LoopForever:
+  b LoopForever
+ 8000e22:	e7fe      	b.n	8000e22 <LoopForever>
+  ldr   r0, =_estack
+ 8000e24:	20005000 	.word	0x20005000
+  ldr r0, =_sdata
+ 8000e28:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 8000e2c:	20000000 	.word	0x20000000
+  ldr r2, =_sidata
+ 8000e30:	08000ea8 	.word	0x08000ea8
+  ldr r2, =_sbss
+ 8000e34:	20000000 	.word	0x20000000
+  ldr r4, =_ebss
+ 8000e38:	20000020 	.word	0x20000020
+
+08000e3c <ADC1_2_IRQHandler>:
+ * @retval : None
+*/
+  .section .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b Infinite_Loop
+ 8000e3c:	e7fe      	b.n	8000e3c <ADC1_2_IRQHandler>
+	...
+
+08000e40 <__libc_init_array>:
+ 8000e40:	b570      	push	{r4, r5, r6, lr}
+ 8000e42:	2600      	movs	r6, #0
+ 8000e44:	4d0c      	ldr	r5, [pc, #48]	; (8000e78 <__libc_init_array+0x38>)
+ 8000e46:	4c0d      	ldr	r4, [pc, #52]	; (8000e7c <__libc_init_array+0x3c>)
+ 8000e48:	1b64      	subs	r4, r4, r5
+ 8000e4a:	10a4      	asrs	r4, r4, #2
+ 8000e4c:	42a6      	cmp	r6, r4
+ 8000e4e:	d109      	bne.n	8000e64 <__libc_init_array+0x24>
+ 8000e50:	f000 f81a 	bl	8000e88 <_init>
+ 8000e54:	2600      	movs	r6, #0
+ 8000e56:	4d0a      	ldr	r5, [pc, #40]	; (8000e80 <__libc_init_array+0x40>)
+ 8000e58:	4c0a      	ldr	r4, [pc, #40]	; (8000e84 <__libc_init_array+0x44>)
+ 8000e5a:	1b64      	subs	r4, r4, r5
+ 8000e5c:	10a4      	asrs	r4, r4, #2
+ 8000e5e:	42a6      	cmp	r6, r4
+ 8000e60:	d105      	bne.n	8000e6e <__libc_init_array+0x2e>
+ 8000e62:	bd70      	pop	{r4, r5, r6, pc}
+ 8000e64:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8000e68:	4798      	blx	r3
+ 8000e6a:	3601      	adds	r6, #1
+ 8000e6c:	e7ee      	b.n	8000e4c <__libc_init_array+0xc>
+ 8000e6e:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8000e72:	4798      	blx	r3
+ 8000e74:	3601      	adds	r6, #1
+ 8000e76:	e7f2      	b.n	8000e5e <__libc_init_array+0x1e>
+ 8000e78:	08000ea0 	.word	0x08000ea0
+ 8000e7c:	08000ea0 	.word	0x08000ea0
+ 8000e80:	08000ea0 	.word	0x08000ea0
+ 8000e84:	08000ea4 	.word	0x08000ea4
+
+08000e88 <_init>:
+ 8000e88:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000e8a:	bf00      	nop
+ 8000e8c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000e8e:	bc08      	pop	{r3}
+ 8000e90:	469e      	mov	lr, r3
+ 8000e92:	4770      	bx	lr
+
+08000e94 <_fini>:
+ 8000e94:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000e96:	bf00      	nop
+ 8000e98:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000e9a:	bc08      	pop	{r3}
+ 8000e9c:	469e      	mov	lr, r3
+ 8000e9e:	4770      	bx	lr
